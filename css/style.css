@@ -243,3 +243,49 @@ hr {
     border: 1px solid #ccc;
     color: #fff;
 }
+.information {
+    position: absolute;
+    top: 20%;
+    left: 10px;
+    padding: 20px;
+    text-align: center;
+    background-color: #f5f5f5; /* Choose your preferred background color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+}
+.information h1 {
+    font-size: 36px;
+    font-weight: bold;
+    background-color: #0C134F; /* Choose your preferred background color */
+    color: #fff; /* Choose your preferred text color */
+    padding: 10px 20px; /* Reduce the padding for a more compact header */
+    margin-bottom: 20px;
+    border-radius: 5px; /* Add rounded corners to the header */
+}
+.information .score h1,
+.information .wrongAttempts h1 {
+    width: 55px;
+    height: 55px; /* Vertically center the text */
+    display: inline-block;
+    background-color: #1D267D; /* Choose your preferred background color */
+    color: #fff; /* Choose your preferred text color */
+    font-size: 24px;
+    margin-right: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 50%;
+}
+.information .newGame button {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #5C469C; /* Choose your preferred button color */
+    color: #fff; /* Choose your preferred button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* Add some spacing between the scores and the button */
+}
+
+.information .newGame button:hover {
+    background-color: #0056b3; /* Choose a darker shade for the button hover state */
+}

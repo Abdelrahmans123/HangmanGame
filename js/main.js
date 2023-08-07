@@ -8,6 +8,8 @@ lettersArray.forEach((letter) => {
     letterElement.className = "letter-box";
     lettersContainer.appendChild(letterElement);
 });
+let score = 0;
+document.getElementById("score").innerHTML = score;
 const words = {
     programming: [
         "php",
@@ -57,6 +59,7 @@ lettersAndSpace.forEach((letter) => {
 });
 let letterGuessSpan = document.querySelectorAll(".letters-guess span");
 let wrongAttempt = 0;
+document.getElementById("wrongAttempts").innerHTML = wrongAttempt;
 let draw = document.querySelector(".hangman-draw");
 document.addEventListener("click", (e) => {
     let status = false;
@@ -77,23 +80,79 @@ document.addEventListener("click", (e) => {
         console.log(status);
         if (!status) {
             wrongAttempt++;
+            document.getElementById("wrongAttempts").innerHTML = wrongAttempt;
             draw.classList.add(`wrong-${wrongAttempt}`);
             document.getElementById("fail").play();
             if (wrongAttempt === 8) {
                 endGame();
-                lettersContainer.classList.add("finished");
+                if (score > 0) {
+                    score--;
+                    console.log(score);
+                    document.getElementById("score").innerHTML = score;
+                }
             }
         } else {
             document.getElementById("success").play();
+            score++;
+            document.getElementById("score").innerHTML = score;
+            const letterGuessArray = [...letterGuessSpan]; // Convert letterGuessSpan to an array using the spread operator
+            const isWordCompleted = letterGuessArray.every(
+                (span) => span.innerHTML.trim() !== ""
+            );
+            if (isWordCompleted) {
+                showSuccessModal();
+            }
         }
     }
 });
 function endGame() {
-    let div = document.createElement("div");
-    let divText = document.createTextNode(
-        `Game Over,The Word is ${randomValue}`
-    );
-    div.appendChild(divText);
-    div.classList.add("game-over");
-    document.body.appendChild(div);
+    Swal.fire({
+        icon: "error",
+        title: "Game Over",
+        text: `The Word is ${randomValue}`,
+    });
+
+    generateNewWord();
 }
+function showSuccessModal() {
+    Swal.fire(
+        "Congratulations!",
+        "Well done! You guessed the word correctly!",
+        "success"
+    );
+    generateNewWord();
+}
+
+function generateNewWord() {
+    let letterBoxes = document.querySelectorAll(".letter-box");
+    letterBoxes.forEach((box) => {
+        box.classList.remove("clicked");
+    });
+    randomPropName = allKeys[Math.floor(Math.random() * allKeys.length)];
+    randomPropValue = words[randomPropName];
+    randomValueNumber = Math.floor(Math.random() * randomPropValue.length);
+    randomValue = randomPropValue[randomValueNumber];
+    document.querySelector(".game-info .category span").innerHTML =
+        randomPropName;
+
+    lettersAndSpace = Array.from(randomValue.toLowerCase());
+    lettersGuessContainer.innerHTML = ""; // Clear the previous word's letters
+    lettersAndSpace.forEach((letter) => {
+        let letterElement = document.createElement("span");
+        if (letter === " ") {
+            letterElement.className = "withSpace";
+        }
+        lettersGuessContainer.appendChild(letterElement);
+    });
+
+    letterGuessSpan = document.querySelectorAll(".letters-guess span");
+    wrongAttempt = 0;
+    draw.className = "hangman-draw"; // Reset the hangman drawing
+}
+document.querySelector(".btn").addEventListener("click", function () {
+    score = 0;
+    wrongAttempt = 0;
+    document.getElementById("score").innerHTML = score;
+    document.getElementById("wrongAttempts").innerHTML = wrongAttempt;
+    generateNewWord();
+});
